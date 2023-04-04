@@ -5,7 +5,7 @@ import AdminPage from './pages/AdminPage';
 import SearchPage from './pages/SearchPage';
 
 function App() {
-  return (
+    return (
 
       <Routes>
         <Route path='/' element={<LoginPage/>} />

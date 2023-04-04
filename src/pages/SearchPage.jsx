@@ -5,7 +5,6 @@ import {
     Box,
     Input,
     Text,
-    Center,
     CheckboxGroup,
     Checkbox,
     Flex,
@@ -96,7 +95,7 @@ const SearchPage = () => {
                 </CheckboxGroup>
             </Box >
 
-            <Flex direction='column' m='5' alignItems='center' m='5rem'>
+            <Flex direction='column' m='5' alignItems='center'>
                     <Page
                         pokemons={pokemons}
                         pageSize={PAGE_SIZE}
