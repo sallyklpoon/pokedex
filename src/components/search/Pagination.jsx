@@ -1,6 +1,7 @@
 import React from 'react';
 import {
-    Button
+    Button,
+    Flex
 } from '@chakra-ui/react';
 
 const Pagination = ({ pokemons, pageSize, currPage, setCurrPage }) => {
@@ -22,7 +23,7 @@ const Pagination = ({ pokemons, pageSize, currPage, setCurrPage }) => {
     const prevPage = () => setCurrPage(currPage - 1);
 
     return (
-        <>
+        <Flex my='5'>
             {
                 currPage !== 1 ?
                     <Button
@@ -60,7 +61,7 @@ const Pagination = ({ pokemons, pageSize, currPage, setCurrPage }) => {
                     :
                     <></>
             }
-        </>
+        </Flex>
     )
 };
 

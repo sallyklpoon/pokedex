@@ -1,4 +1,10 @@
 import React from 'react';
+import {
+    Flex,
+    Text,
+    Center,
+    Image,
+} from '@chakra-ui/react';
 
 const Page = ({ pokemons, pageSize, currPage }) => {
 
@@ -13,21 +19,24 @@ const Page = ({ pokemons, pageSize, currPage }) => {
     }
 
     return (
-        <div className='page-container'>
+        <Flex wrap='wrap' alignItems='center' gap='3'>
             {
                 pokemons.map(poke => {
                     return (
                         <div key={poke.id} className='poke-item center-flex-col'>
-                            <img
-                                className='poke-img'
+                            <Image
+                                boxSize='15rem'
                                 alt={pokeImageSrc(poke.id)}
-                                src={pokeImageSrc(poke.id)}></img>
-                            <p>{poke.name.english}</p>
+                                src={pokeImageSrc(poke.id)}>
+                            </Image>
+                            <Center>
+                                <Text fontSize='lg' mt='1' mb='3'>{poke.name.english}</Text>
+                            </Center>
                         </div>
                     )
                 })
             }
-        </div>
+        </Flex>
     )
 };
 

@@ -5,11 +5,14 @@ import {
     Box,
     Input,
     Text,
+    Center,
     CheckboxGroup,
     Checkbox,
-    Stack,
+    Flex,
+    Stack
 } from '@chakra-ui/react';
 import Pagination from '../components/search/Pagination';
+import Page from '../components/search/Page';
 
 const SearchPage = () => {
 
@@ -93,12 +96,20 @@ const SearchPage = () => {
                 </CheckboxGroup>
             </Box >
 
-            <Pagination
-                pokemons={pokemons}
-                pageSize={PAGE_SIZE}
-                currPage={currPage}
-                setCurrPage={setCurrPage}
-            />
+            <Flex direction='column' m='5' alignItems='center' m='5rem'>
+                    <Page
+                        pokemons={pokemons}
+                        pageSize={PAGE_SIZE}
+                        currPage={currPage}
+                    />
+
+                    <Pagination
+                        pokemons={pokemons}
+                        pageSize={PAGE_SIZE}
+                        currPage={currPage}
+                        setCurrPage={setCurrPage}
+                    />
+            </Flex>
         </>
     );
 };
