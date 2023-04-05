@@ -12,9 +12,11 @@ import {
     ModalFooter,
     ModalHeader,
     Button,
-    Box,
-    Divider
+    Divider,
+    UnorderedList,
+    ListItem
 } from '@chakra-ui/react';
+import uuid from 'react-uuid';
 
 const PokemonItem = ({ poke }) => {
     const { isOpen, onOpen, onClose } = useDisclosure()
@@ -56,30 +58,37 @@ const PokemonItem = ({ poke }) => {
                     <Divider />
                     <ModalCloseButton />
                     <ModalBody>
-                        <p><b>ID:</b> {poke.id}</p>
-                        <p><b>Type:</b> {poke.type}</p>
-                        <p><b>Name</b>
-                            <Box ml='10'>
-                                <ul>
-                                    <li><b>English: </b> {poke.name.english}</li>
-                                    <li><b>Japanese: </b>{poke.name.japanese}</li>
-                                    <li><b>Chinese: </b> {poke.name.chinese}</li>
-                                    <li><b>French: </b>  {poke.name.french}</li>
-                                </ul>
-                            </Box>
-                        </p>
-                        <p><b>Base</b>
-                            <Box ml='10'>
-                                <ul>
-                                    <li><b>HP: </b>           {poke.base.HP}</li>
-                                    <li><b>Attack: </b>       {poke.base.Attack}</li>
-                                    <li><b>Defense: </b>      {poke.base.Defense}</li>
-                                    <li><b>Attack Speed: </b> {poke.base['Sp. Defense']}</li>
-                                    <li><b>Defence Speed: </b>{poke.base['Sp. Defense']}</li>
-                                    <li><b>Speed: </b>        {poke.base.Speed}</li>
-                                </ul>
-                            </Box>
-                        </p>
+                        <Text as='b'>ID:</Text> {poke.id}
+                        <br/>
+                        <Text as='b'>Type:</Text>
+                        <UnorderedList ml='10'>
+                            {
+                                poke.type.map(type => {
+                                    return(
+                                        <ListItem key={uuid()}>{type}</ListItem>
+                                    )
+                                })
+                            }
+                        </UnorderedList>
+
+                        <Text as='b'>Name</Text>
+                        <UnorderedList ml='10'>
+                            <ListItem><Text as='b'>English: </Text> {poke.name.english}</ListItem>
+                            <ListItem><Text as='b'>Japanese: </Text>{poke.name.japanese}</ListItem>
+                            <ListItem><Text as='b'>Chinese: </Text> {poke.name.chinese}</ListItem>
+                            <ListItem><Text as='b'>French: </Text>  {poke.name.french}</ListItem>
+
+                        </UnorderedList>
+                        <Text as='b'>Base</Text>
+                        <UnorderedList ml='10'>
+                            <ListItem><Text as='b'>HP: </Text>           {poke.base.HP}</ListItem>
+                            <ListItem><Text as='b'>Attack: </Text>       {poke.base.Attack}</ListItem>
+                            <ListItem><Text as='b'>Defense: </Text>      {poke.base.Defense}</ListItem>
+                            <ListItem><Text as='b'>Attack Speed: </Text> {poke.base['Sp. Defense']}</ListItem>
+                            <ListItem><Text as='b'>Defence Speed: </Text>{poke.base['Sp. Defense']}</ListItem>
+                            <ListItem><Text as='b'>Speed: </Text>        {poke.base.Speed}</ListItem>
+                        </UnorderedList>
+
 
                     </ModalBody>
                     <Divider />

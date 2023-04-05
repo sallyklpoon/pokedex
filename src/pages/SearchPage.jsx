@@ -20,10 +20,12 @@ const SearchPage = () => {
     });
 
     useEffect(() => {
-        fetchData();
         filterPokemons(userInputs);
     }, [userInputs]);
 
+    useEffect(() => {
+        fetchData();
+    }, []);
 
     const fetchData = async () => {
         let storedData = localStorage.getItem('pokemons');
@@ -41,12 +43,10 @@ const SearchPage = () => {
     const filterPokemons = async(inputs) => {
         let filteredPoke = allPokemons;
         if (inputs['filterTypes'].length !== 0) {
-            console.log(inputs['filterTypes'])
             filteredPoke = filteredPoke.filter(poke => {
                 return poke['type'].filter(type => inputs['filterTypes'].includes(type)).length > 0;
             })
         }
-        console.log(filteredPoke)
         if (inputs['searchName'] !== '') {
             filteredPoke = filteredPoke.filter(poke => {
                 return poke['name']['english'].toLowerCase().includes(inputs['searchName'].toLowerCase())
@@ -69,7 +69,6 @@ const SearchPage = () => {
                     pokemons={pokemons}
                     pageSize={PAGE_SIZE}
                     currPage={currPage}
-                    userInputs={userInputs}
                 />
 
                 <Pagination

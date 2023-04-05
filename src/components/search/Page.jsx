@@ -1,14 +1,11 @@
 import React from 'react';
 import {
-    Flex,
-    Text,
-    Center,
-    Image,
+    Flex
 } from '@chakra-ui/react';
 import PokemonItem from './PokemonItem';
 import uuid from 'react-uuid';
 
-const Page = ({ pokemons, pageSize, currPage, userInputs }) => {
+const Page = ({ pokemons, pageSize, currPage }) => {
 
     const startIndex = (currPage - 1) * pageSize;
     const endIndex = startIndex + pageSize;
@@ -19,15 +16,14 @@ const Page = ({ pokemons, pageSize, currPage, userInputs }) => {
             {
                 pokemons.map(poke => {
                     return (
-                        <>
+                        <div key={uuid()}>
                             {true ?
                                 <PokemonItem
                                     poke={poke}
-                                    key={uuid()}
                                 />
                                 : <></>
                             }
-                        </>
+                        </div>
                     )
                 })
             }
