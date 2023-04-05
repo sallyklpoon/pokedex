@@ -40,12 +40,14 @@ const SearchPage = () => {
 
     const filterPokemons = async(inputs) => {
         let filteredPoke = allPokemons;
-        if (inputs['filterTypes'].length != 0) {
+        if (inputs['filterTypes'].length !== 0) {
+            console.log(inputs['filterTypes'])
             filteredPoke = filteredPoke.filter(poke => {
-                poke['type'].filter(type => inputs['filterTypes'].includes(type));
+                return poke['type'].filter(type => inputs['filterTypes'].includes(type)).length > 0;
             })
         }
-        if (inputs['searchName'] != '') {
+        console.log(filteredPoke)
+        if (inputs['searchName'] !== '') {
             filteredPoke = filteredPoke.filter(poke => {
                 return poke['name']['english'].toLowerCase().includes(inputs['searchName'].toLowerCase())
             });

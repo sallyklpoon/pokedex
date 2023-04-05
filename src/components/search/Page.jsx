@@ -14,21 +14,10 @@ const Page = ({ pokemons, pageSize, currPage, userInputs }) => {
     const endIndex = startIndex + pageSize;
     pokemons = pokemons.slice(startIndex, endIndex);
 
-    const search = data => {
-        let filteredPoke = data;
-        if (userInputs['searchName'] != '' && userInputs['filterTypes'].length != 0) {
-            filteredPoke = data.filter(poke => {
-                poke['type'].filter(type => userInputs['filterTypes'].includes(type)).length != 0
-                    && poke['name']['english'].toLowerCase().includes(userInputs['searchName'].toLowerCase())
-            })
-        }
-        return filteredPoke;
-    }
-
     return (
         <Flex wrap='wrap' alignItems='center' gap='5' margin='5rem'>
             {
-                search(pokemons).map(poke => {
+                pokemons.map(poke => {
                     return (
                         <>
                             {true ?
