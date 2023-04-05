@@ -12,7 +12,8 @@ import {
     ModalFooter,
     ModalHeader,
     Button,
-    Box
+    Box,
+    Divider
 } from '@chakra-ui/react';
 
 const PokemonItem = ({ poke }) => {
@@ -51,7 +52,8 @@ const PokemonItem = ({ poke }) => {
             <Modal isOpen={isOpen} onClose={onClose} isCentered='true'>
                 <ModalOverlay />
                 <ModalContent>
-                    <ModalHeader>{poke.name.english}</ModalHeader>
+                    <ModalHeader color='teal'>{poke.name.english}</ModalHeader>
+                    <Divider />
                     <ModalCloseButton />
                     <ModalBody>
                         <p><b>ID:</b> {poke.id}</p>
@@ -80,13 +82,12 @@ const PokemonItem = ({ poke }) => {
                         </p>
 
                     </ModalBody>
-
+                    <Divider />
 
                     <ModalFooter>
-                        <Button colorScheme='blue' mr={3} onClick={onClose}>
+                        <Button colorScheme='teal' mr={3} onClick={onClose}>
                             Close
                         </Button>
-                        <Button variant='ghost'>Secondary Action</Button>
                     </ModalFooter>
                 </ModalContent>
             </Modal>
