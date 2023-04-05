@@ -11,12 +11,18 @@ import SearchBox from '../components/search/SearchBox';
 const SearchPage = () => {
 
     const PAGE_SIZE = 10;
+    const [allPokemons, setAllPokemons] = useState([]);
     const [pokemons, setPokemons] = useState([]);
     const [currPage, setCurrPage] = useState(1);
     const [userInputs, setUserInputs] = useState({
         searchName: '',
         filterTypes: []
     });
+
+    useEffect(() => {
+        fetchData();
+        filterPokemons(userInputs);
+    }, [userInputs]);
 
 
     const fetchData = async () => {
@@ -28,14 +34,24 @@ const SearchPage = () => {
                 });
         }
         storedData = JSON.parse(localStorage.getItem('pokemons'));
+        setAllPokemons(storedData);
         setPokemons(storedData);
     };
 
-    useEffect(() => {
-        fetchData();
-    }, [userInputs]);
-
-    const { isInvalidName, setIsInvalidName } = useState(false);
+    const filterPokemons = async(inputs) => {
+        let filteredPoke = allPokemons;
+        if (inputs['filterTypes'].length != 0) {
+            filteredPoke = filteredPoke.filter(poke => {
+                poke['type'].filter(type => inputs['filterTypes'].includes(type));
+            })
+        }
+        if (inputs['searchName'] != '') {
+            filteredPoke = filteredPoke.filter(poke => {
+                return poke['name']['english'].toLowerCase().includes(inputs['searchName'].toLowerCase())
+            });
+        }
+        setPokemons(filteredPoke);
+    };
 
     return (
         <>
@@ -45,7 +61,6 @@ const SearchPage = () => {
                 <SearchBox
                     inputs={userInputs}
                     setUserInputs={setUserInputs}
-                    isValidName={isInvalidName}
                 />
 
                 <Page

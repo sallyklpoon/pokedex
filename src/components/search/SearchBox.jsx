@@ -8,13 +8,13 @@ import {
     Stack,
 } from '@chakra-ui/react';
 
-const SearchBox = ({ inputs, setUserInputs, isInvalidName }) => {
+const SearchBox = ({ inputs, setUserInputs }) => {
 
     const updateSearchName = e => {
         setUserInputs({
             ...inputs,
             searchName: e.target.value
-        })
+        });
     };
 
     const updateFilterTypes = checked => {
@@ -44,7 +44,6 @@ const SearchBox = ({ inputs, setUserInputs, isInvalidName }) => {
                     size='md'
                     maxWidth='md'
                     onChange={updateSearchName}
-                    isInvalid={isInvalidName}
                     placeholder="Type the pokemon name..."
 
                 />
