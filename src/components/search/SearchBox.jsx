@@ -6,6 +6,7 @@ import {
     CheckboxGroup,
     Checkbox,
     Stack,
+    Heading
 } from '@chakra-ui/react';
 
 const SearchBox = ({ inputs, setUserInputs }) => {
@@ -37,7 +38,12 @@ const SearchBox = ({ inputs, setUserInputs }) => {
                 borderRadius='lg'
             >
 
-                <Text as='b'>Pokemon Name:</Text>
+                <Heading
+                    size='xs'
+                    textTransform='uppercase'
+                >
+                    Pokemon Name:
+                </Heading>
                 <br />
                 <Input
                     mb='5'
@@ -49,9 +55,14 @@ const SearchBox = ({ inputs, setUserInputs }) => {
                 />
 
                 <br />
-                <Text as='b' mt='3'>Pokemon Type (check all that apply):</Text>
+                <Heading
+                    size='xs'
+                    textTransform='uppercase'
+                    mt='3'>
+                    Pokemon Type (check all that apply):
+                </Heading>
                 <br />
-                <CheckboxGroup 
+                <CheckboxGroup
                     colorScheme='teal'
                     onChange={updateFilterTypes}
                 >

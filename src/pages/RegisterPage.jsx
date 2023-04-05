@@ -4,11 +4,12 @@ import {
     Center,
     Flex
 } from '@chakra-ui/react';
-import LoginCard from '../components/login/LoginCard';
+import RegisterCard from '../components/register/RegisterCard';
 
-const LoginPage = () => {
+
+const RegisterPage = () => {
     const bgStyle = {
-        backgroundImage: 'url(https://i.imgur.com/FkGacKR.jpg)',
+        backgroundImage: 'url(https://i.imgur.com/ksenWPX.jpg)',
         backgroundSize: 'cover',
         backgorundPosition: 'center'
     }
@@ -19,10 +20,10 @@ const LoginPage = () => {
                 h='100%'
                 w='100%'
             >
-                <LoginCard />
+                <RegisterCard />
             </Center>
         </Box>
-    );
-};
+    )
+}
 
-export default LoginPage;
+export default RegisterPage;
