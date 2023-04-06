@@ -44,7 +44,7 @@ const SearchPage = () => {
         let filteredPoke = allPokemons;
         if (inputs['filterTypes'].length !== 0) {
             filteredPoke = filteredPoke.filter(poke => {
-                return poke['type'].filter(type => inputs['filterTypes'].includes(type)).length > 0;
+                return inputs['filterTypes'].every(type => poke['type'].includes(type));
             })
         }
         if (inputs['searchName'] !== '') {
@@ -53,6 +53,7 @@ const SearchPage = () => {
             });
         }
         setPokemons(filteredPoke);
+        setCurrPage(1);
     };
 
     return (
