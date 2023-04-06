@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import { useNavigate } from 'react-router';
 import {
     Card,
     CardHeader,
@@ -13,6 +14,7 @@ import {
 } from '@chakra-ui/react';
 
 const LoginCard = () => {
+    const navigate = useNavigate();
     const [isError, setIsError] = useState(false);
     const [loginInput, setLoginInput] = useState({
         username: '',
@@ -36,11 +38,14 @@ const LoginCard = () => {
         });
     }
 
-
     const loginUser = () => {
         console.log(loginInput);
         setIsError(true);
     };
+
+    const toRegister = () => {
+        navigate('/register');
+    }
 
     return (
         <Card minWidth='md'>
@@ -86,13 +91,14 @@ const LoginCard = () => {
                             minW='xs'
                             onClick={loginUser}
                         >
-                            Log in
+                            Log-in
                         </Button>
 
                         <Button
                             colorScheme='teal'
                             variant='ghost'
                             minW='xs'
+                            onClick={toRegister}
                         >
                             Register
                         </Button>

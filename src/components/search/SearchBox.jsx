@@ -2,7 +2,6 @@ import React from 'react';
 import {
     Box,
     Input,
-    Text,
     CheckboxGroup,
     Checkbox,
     Stack,
@@ -44,7 +43,6 @@ const SearchBox = ({ inputs, setUserInputs }) => {
                 >
                     Pokemon Name:
                 </Heading>
-                <br />
                 <Input
                     mb='5'
                     size='md'
@@ -61,7 +59,6 @@ const SearchBox = ({ inputs, setUserInputs }) => {
                     mt='3'>
                     Pokemon Type (check all that apply):
                 </Heading>
-                <br />
                 <CheckboxGroup
                     colorScheme='teal'
                     onChange={updateFilterTypes}

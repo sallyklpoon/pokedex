@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import { useNavigate } from 'react-router';
 import {
     Card,
     CardHeader,
@@ -9,43 +10,67 @@ import {
     Input,
     Button,
     Stack,
-    Text
+    Text,
+    Select
 } from '@chakra-ui/react';
 
 const RegisterCard = () => {
-    const [isError, setIsError] = useState(true);
-    const [loginInput, setLoginInput] = useState({
+    const navigate = useNavigate();
+    const [isError, setIsError] = useState(false);
+    const [registerInput, setRegisterInput] = useState({
         username: '',
-        password: ''
+        email: '',
+        password: '',
+        role: ''
     });
 
 
     const updateUsername = e => {
         setIsError(false);
-        setLoginInput({
-            ...loginInput,
+        setRegisterInput({
+            ...registerInput,
             username: e.target.value
         });
     }
 
+    const updateEmail = e => {
+        setIsError(false);
+        setRegisterInput({
+            ...registerInput,
+            email: e.target.value
+        })
+    }
+
     const updatePassword = e => {
         setIsError(false);
-        setLoginInput({
-            ...loginInput,
+        setRegisterInput({
+            ...registerInput,
             password: e.target.value
         });
     }
 
+    const updateRole = e => {
+        setIsError(false);
+        setRegisterInput({
+            ...registerInput,
+            role: e.target.value
+        })
+    }
 
-    const loginUser = () => {
-        console.log(loginInput);
+
+    const registerUser = () => {
+        console.log(registerInput);
         setIsError(true);
     };
+
+    const toLogin = () => {
+        navigate('/');
+    }
 
     return (
         <Card minWidth='md'>
             <CardHeader>
-                <Heading size='md'>Pokédex Log-in</Heading>
+                <Heading size='md'>Pokédex Register</Heading>
             </CardHeader>
 
             <Flex direction='column' alignItems='center'>
@@ -61,6 +86,16 @@ const RegisterCard = () => {
                         onChange={updateUsername}
                     />
                     <Heading size='xs' textTransform='uppercase'>
+                        Email
+                    </Heading>
+                    <Input
+                        mb='5'
+                        size='md'
+                        w='20rem'
+                        isInvalid={isError}
+                        onChange={updateEmail}
+                    />
+                    <Heading size='xs' textTransform='uppercase'>
                         Password
                     </Heading>
                     <Input
@@ -70,11 +105,22 @@ const RegisterCard = () => {
                         isInvalid={isError}
                         onChange={updatePassword}
                     />
+                    <Heading size='xs' textTransform='uppercase'>
+                        Role
+                    </Heading>
+                    <Select 
+                    placeholdeer='Select user role'
+                    isInvalid={isError}
+                    onChange={updateRole}
+                    >
+                        <option value='user'>User</option>
+                        <option value='admin'>Administrator</option>
+                    </Select>
                     {
-                        isError?
+                        isError ?
                             <Text color='red'>
-                                The login information is incorrect.
-                            </Text> : 
+                               All fields must be filled out.
+                            </Text> :
                             <></>
                     }
                 </CardBody>
@@ -84,17 +130,18 @@ const RegisterCard = () => {
                         <Button
                             colorScheme='teal'
                             minW='xs'
-                            onClick={loginUser}
+                            onClick={registerUser}
                         >
-                            Log in
+                            Register
                         </Button>
 
                         <Button
                             colorScheme='teal'
                             variant='ghost'
                             minW='xs'
+                            onClick={toLogin}
                         >
-                            Register
+                            Back to Log-in
                         </Button>
                     </Stack>
                 </CardFooter>
