@@ -55,16 +55,27 @@ const PokemonItem = ({ poke }) => {
                 <ModalOverlay />
                 <ModalContent>
                     <ModalHeader color='teal'>{poke.name.english}</ModalHeader>
-                    <Divider />
+                    <Divider/>
                     <ModalCloseButton />
-                    <ModalBody>
+                    <ModalBody mb='6'>
+                        <Center>
+                            <Image
+                                p='2'
+                                boxSize='14rem'
+                                alt={pokeImageSrc(poke.id)}
+                                src={pokeImageSrc(poke.id)}
+                            >
+
+                            </Image>
+                        </Center>
+                        <Divider my='4'/>
                         <Text as='b'>ID:</Text> {poke.id}
-                        <br/>
+                        <br />
                         <Text as='b'>Type:</Text>
                         <UnorderedList ml='10'>
                             {
                                 poke.type.map(type => {
-                                    return(
+                                    return (
                                         <ListItem key={uuid()}>{type}</ListItem>
                                     )
                                 })
@@ -91,13 +102,6 @@ const PokemonItem = ({ poke }) => {
 
 
                     </ModalBody>
-                    <Divider />
-
-                    <ModalFooter>
-                        <Button colorScheme='teal' mr={3} onClick={onClose}>
-                            Close
-                        </Button>
-                    </ModalFooter>
                 </ModalContent>
             </Modal>
         </>
