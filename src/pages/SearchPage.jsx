@@ -7,6 +7,8 @@ import {
 import Pagination from '../components/search/Pagination';
 import Page from '../components/search/Page';
 import SearchBox from '../components/search/SearchBox';
+import toast from 'react-hot-toast';
+import NavBar from '../components/layout/NavBar';
 
 const SearchPage = () => {
 
@@ -30,9 +32,12 @@ const SearchPage = () => {
     const fetchData = async () => {
         let storedData = localStorage.getItem('pokemons');
         if (!storedData) {
-            axios.get('https://raw.githubusercontent.com/fanzeyi/pokemon.json/master/pokedex.json')
+            axios.get('http://localhost:6001/pokemons')
                 .then((res) => {
                     localStorage.setItem('pokemons', JSON.stringify(res.data));
+                }).catch(err => {
+                    localStorage.setItem('pokemons', []);
+                    toast.error(`Error retreiving pokemons: ${err}. Refresh the page and try again.`)
                 });
         }
         storedData = JSON.parse(localStorage.getItem('pokemons'));
@@ -56,11 +61,18 @@ const SearchPage = () => {
         setCurrPage(1);
     };
 
+    const getUsername = () => {
+        const user = JSON.parse(localStorage.getItem('user'));
+        return user.username;
+    }
+
     return (
         <>
-            <Text fontSize='5xl'>Search For Pokemons!</Text>
+            <NavBar/>
 
             <Flex direction='column' m='5' alignItems='center'>
+            <Text fontSize='3xl'>Search Pokémons</Text>
+
                 <SearchBox
                     inputs={userInputs}
                     setUserInputs={setUserInputs}

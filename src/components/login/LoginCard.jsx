@@ -14,6 +14,7 @@ import {
     Text
 } from '@chakra-ui/react';
 import toast from 'react-hot-toast';
+import { setTokensCookie, getTokensFromCookie, REFRESH_TOKEN_HEADER, ACCESS_TOKEN_HEADER } from '../../helpers/cookies';
 
 const LoginCard = () => {
     const navigate = useNavigate();
@@ -41,15 +42,30 @@ const LoginCard = () => {
     }
 
     const loginUser = () => {
-        console.log(loginInput);
+        if (loginInput['username'] == '' || loginInput['password'] == '') {
+            setIsError(true);
+            return;
+        }
+
         axios.post('http://localhost:6001/login', {
             username: loginInput['username'],
             password: loginInput['password']
         }).then(res => {
+            let user = JSON.stringify(res.data);
+            localStorage.setItem('user', user);
+
+            setTokensCookie({
+                refresh_token: res.headers.REFRESH_TOKEN_HEADER,
+                access_token: res.headers.ACCESS_TOKEN_HEADER 
+            });
+
+            let tokens = getTokensFromCookie();
+            console.log(tokens)
+
             navigate('/search');
         }).catch( err => {
-            setIsError(true);
-            toast.error(err);
+            console.log(err)
+            toast.error("Login unsuccessful, please try again.");
         })
     };
 
@@ -88,7 +104,7 @@ const LoginCard = () => {
                     {
                         isError?
                             <Text color='red'>
-                                The login information is incorrect.
+                                Provide a password and username.
                             </Text> : 
                             <></>
                     }
