@@ -35,6 +35,10 @@ const SearchPage = () => {
             axios.get('http://localhost:6001/pokemons')
                 .then((res) => {
                     localStorage.setItem('pokemons', JSON.stringify(res.data));
+                    storedData = JSON.parse(localStorage.getItem('pokemons'));
+                    setAllPokemons(storedData);
+                    setPokemons(storedData);
+                    return;
                 }).catch(err => {
                     localStorage.setItem('pokemons', []);
                     toast.error(`Error retreiving pokemons: ${err}. Refresh the page and try again.`)

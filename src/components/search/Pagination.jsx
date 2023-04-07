@@ -7,7 +7,7 @@ import {
 const Pagination = ({ pokemons, pageSize, currPage, setCurrPage }) => {
     const PAGES_DISPLAYED = 10;
     const DISPLAY_HALF = PAGES_DISPLAYED / 2;
-    const totalPages = Math.ceil(pokemons.length / pageSize);
+    const totalPages = Math.ceil(pokemons?.length / pageSize);
 
     const pageNumbers = Array.from({ length: totalPages }, (_, index) => index);
     let displayNumbers;

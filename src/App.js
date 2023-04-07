@@ -1,10 +1,14 @@
-import { Route, Routes } from 'react-router';
+import { useEffect, useState } from 'react';
+import { Route, Routes, useNavigate } from 'react-router';
 import './App.css';
 import LoginPage from './pages/LoginPage';
 import AdminPage from './pages/AdminPage';
 import SearchPage from './pages/SearchPage';
 import RegisterPage from './pages/RegisterPage';
 import { Toaster } from 'react-hot-toast';
+import AdminRoute from './components/routing/AdminRoute';
+import AuthRoute from './components/routing/AuthRoute';
+
 
 function App() {
   return (
@@ -19,9 +23,17 @@ function App() {
 
         <Route path='/register' element={<RegisterPage />} />
 
-        <Route path='/admin' element={<AdminPage />} />
+        <Route path='/admin' element={
+          <AdminRoute>
+            <AdminPage />
+          </AdminRoute>}
+        />
 
-        <Route path='/search' element={<SearchPage />} />
+        <Route path='/search' element={
+          <AuthRoute>
+            <SearchPage />
+          </AuthRoute>
+        } />
 
       </Routes>
     </>
