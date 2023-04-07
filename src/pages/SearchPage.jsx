@@ -9,6 +9,7 @@ import Page from '../components/search/Page';
 import SearchBox from '../components/search/SearchBox';
 import toast from 'react-hot-toast';
 import Navbar from '../components/layout/Navbar';
+import appAxios from '../helpers/appAxios';
 
 const SearchPage = () => {
 

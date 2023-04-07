@@ -9,17 +9,21 @@ import {
     ModalBody,
     ModalCloseButton,
     ModalContent,
-    ModalFooter,
     ModalHeader,
-    Button,
     Divider,
     UnorderedList,
     ListItem
 } from '@chakra-ui/react';
 import uuid from 'react-uuid';
+import appAxios from '../../helpers/appAxios';
 
 const PokemonItem = ({ poke }) => {
-    const { isOpen, onOpen, onClose } = useDisclosure()
+    const { isOpen, onOpen, onClose } = useDisclosure();
+
+    const accessPokemon = async() => {
+        onOpen();
+        await appAxios.get(`http://localhost:6001/pokemon/${poke['id']}`);
+    }
 
 
     const pokeImageSrc = id => {
@@ -37,7 +41,7 @@ const PokemonItem = ({ poke }) => {
                     boxSize='14rem'
                     alt={pokeImageSrc(poke.id)}
                     src={pokeImageSrc(poke.id)}
-                    onClick={onOpen}
+                    onClick={accessPokemon}
                     _hover={{
                         cursor: 'pointer',
                         backgroundColor: '#d5e3eb',
