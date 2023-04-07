@@ -61,11 +61,6 @@ const SearchPage = () => {
         setCurrPage(1);
     };
 
-    const getUsername = () => {
-        const user = JSON.parse(localStorage.getItem('user'));
-        return user.username;
-    }
-
     return (
         <>
             <Navbar/>

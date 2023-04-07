@@ -10,7 +10,6 @@ import {
     HStack
 } from '@chakra-ui/react';
 import axios from 'axios';
-import { REFRESH_TOKEN_HEADER } from '../../helpers/auth';
 
 const Navbar = () => {
     const navigate = useNavigate();
@@ -22,7 +21,9 @@ const Navbar = () => {
 
     const logoutUser = () => {
         axios.get('http://localhost:6001/logout', {
-                REFRESH_TOKEN_HEADER: localStorage.getItem(REFRESH_TOKEN_HEADER)   
+            headers: {
+                'auth-token-refresh': localStorage.getItem('refresh_token')
+            }
         }).then( res => {
             localStorage.clear();
             navigate('/');
