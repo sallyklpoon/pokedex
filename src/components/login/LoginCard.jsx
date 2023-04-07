@@ -14,7 +14,7 @@ import {
     Text
 } from '@chakra-ui/react';
 import toast from 'react-hot-toast';
-import { setTokensCookie, getTokensFromCookie, REFRESH_TOKEN_HEADER, ACCESS_TOKEN_HEADER } from '../../helpers/cookies';
+import { ACCESS_TOKEN_HEADER, REFRESH_TOKEN_HEADER } from '../../helpers/auth';
 
 const LoginCard = () => {
     const navigate = useNavigate();
@@ -53,15 +53,8 @@ const LoginCard = () => {
         }).then(res => {
             let user = JSON.stringify(res.data);
             localStorage.setItem('user', user);
-
-            setTokensCookie({
-                refresh_token: res.headers.REFRESH_TOKEN_HEADER,
-                access_token: res.headers.ACCESS_TOKEN_HEADER 
-            });
-
-            let tokens = getTokensFromCookie();
-            console.log(tokens)
-
+            localStorage.setItem('access_token', res.headers[ACCESS_TOKEN_HEADER]);
+            localStorage.setItem('refresh_token', res.headers[REFRESH_TOKEN_HEADER]);
             navigate('/search');
         }).catch( err => {
             console.log(err)

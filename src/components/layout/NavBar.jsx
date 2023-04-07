@@ -9,8 +9,10 @@ import {
     Avatar,
     HStack
 } from '@chakra-ui/react';
+import axios from 'axios';
+import { REFRESH_TOKEN_HEADER } from '../../helpers/auth';
 
-const NavBar = () => {
+const Navbar = () => {
     const navigate = useNavigate();
 
     const getUsername = () => {
@@ -19,7 +21,12 @@ const NavBar = () => {
     }
 
     const logoutUser = () => {
-        
+        axios.get('http://localhost:6001/logout', {
+                REFRESH_TOKEN_HEADER: localStorage.getItem(REFRESH_TOKEN_HEADER)   
+        }).then( res => {
+            localStorage.clear();
+            navigate('/');
+        })
     }
 
     return (
@@ -33,10 +40,12 @@ const NavBar = () => {
                     <Text fontSize='3xl' >Pokédex</Text>
                     <Spacer />
                     <HStack >
+
                         <Button
                             variant='ghost'
                             colorScheme='teal'
                             mr='3'
+                            onClick={logoutUser}
                         >
                             Logout
                         </Button>
@@ -46,12 +55,12 @@ const NavBar = () => {
                             name={getUsername()}
                             size='sm'
                         />
+
                     </HStack>
                 </Flex>
-
             </Box>
         </>
     );
 };
 
-export default NavBar;
+export default Navbar;

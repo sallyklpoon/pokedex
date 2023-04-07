@@ -8,7 +8,7 @@ import Pagination from '../components/search/Pagination';
 import Page from '../components/search/Page';
 import SearchBox from '../components/search/SearchBox';
 import toast from 'react-hot-toast';
-import NavBar from '../components/layout/NavBar';
+import Navbar from '../components/layout/Navbar';
 
 const SearchPage = () => {
 
@@ -68,7 +68,7 @@ const SearchPage = () => {
 
     return (
         <>
-            <NavBar/>
+            <Navbar/>
 
             <Flex direction='column' m='5' alignItems='center'>
             <Text fontSize='3xl'>Search Pokémons</Text>
