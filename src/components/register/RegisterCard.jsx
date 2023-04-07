@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import axios from 'axios';
 import { useNavigate } from 'react-router';
 import {
     Card,
@@ -13,6 +14,7 @@ import {
     Text,
     Select
 } from '@chakra-ui/react';
+import toast from 'react-hot-toast';
 
 const RegisterCard = () => {
     const navigate = useNavigate();
@@ -59,8 +61,15 @@ const RegisterCard = () => {
 
 
     const registerUser = () => {
-        console.log(registerInput);
-        setIsError(true);
+        axios.post('http://localhost:6001/register', {
+            username: registerInput['username'],
+            password: registerInput['password'],
+            email: registerInput['email']
+        }).then( res => {
+            toast.success('User registered successfully!');
+        }).catch( err => {
+            toast.error(`Registration failed: ${err}`)
+        })
     };
 
     const toLogin = () => {

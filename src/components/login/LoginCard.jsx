@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import axios from 'axios';
 import { useNavigate } from 'react-router';
 import {
     Card,
@@ -12,6 +13,7 @@ import {
     Stack,
     Text
 } from '@chakra-ui/react';
+import toast from 'react-hot-toast';
 
 const LoginCard = () => {
     const navigate = useNavigate();
@@ -40,7 +42,15 @@ const LoginCard = () => {
 
     const loginUser = () => {
         console.log(loginInput);
-        setIsError(true);
+        axios.post('http://localhost:6001/login', {
+            username: loginInput['username'],
+            password: loginInput['password']
+        }).then(res => {
+            navigate('/search');
+        }).catch( err => {
+            setIsError(true);
+            toast.error(err);
+        })
     };
 
     const toRegister = () => {
