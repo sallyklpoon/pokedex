@@ -15,6 +15,7 @@ import {
 } from '@chakra-ui/react';
 import toast from 'react-hot-toast';
 import { ACCESS_TOKEN_HEADER, REFRESH_TOKEN_HEADER } from '../../helpers/auth';
+import recordRequest from '../../helpers/trackRequests';
 
 const LoginCard = () => {
     const navigate = useNavigate();
@@ -56,9 +57,11 @@ const LoginCard = () => {
             localStorage.setItem('access_token', res.headers[ACCESS_TOKEN_HEADER]);
             localStorage.setItem('refresh_token', res.headers[REFRESH_TOKEN_HEADER]);
             navigate('/search');
+            recordRequest('/login', res.status);
         }).catch( err => {
-            console.log(err)
+            console.log(err.response.status)
             toast.error("Login unsuccessful, please try again.");
+            recordRequest('/login', err.response.status);
         })
     };
 

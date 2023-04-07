@@ -10,6 +10,7 @@ import {
     HStack
 } from '@chakra-ui/react';
 import axios from 'axios';
+import recordRequest from '../../helpers/trackRequests';
 
 const Navbar = () => {
     const navigate = useNavigate();
@@ -25,8 +26,11 @@ const Navbar = () => {
                 'auth-token-refresh': localStorage.getItem('refresh_token')
             }
         }).then( res => {
+            recordRequest('/logout', res.status);
             localStorage.clear();
             navigate('/');
+        }).catch(err => {
+            recordRequest('/logout', err.response.status);
         })
     }
 

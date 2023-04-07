@@ -10,6 +10,7 @@ import SearchBox from '../components/search/SearchBox';
 import toast from 'react-hot-toast';
 import Navbar from '../components/layout/Navbar';
 import appAxios from '../helpers/appAxios';
+import recordRequest from '../helpers/trackRequests';
 
 const SearchPage = () => {
 
@@ -39,10 +40,12 @@ const SearchPage = () => {
                     storedData = JSON.parse(localStorage.getItem('pokemons'));
                     setAllPokemons(storedData);
                     setPokemons(storedData);
+                    recordRequest('/pokemons', res.status);
                     return;
                 }).catch(err => {
                     localStorage.setItem('pokemons', []);
                     toast.error(`Error retreiving pokemons: ${err}. Refresh the page and try again.`)
+                    recordRequest('/pokemons', err.response.status);
                 });
         }
         storedData = JSON.parse(localStorage.getItem('pokemons'));
