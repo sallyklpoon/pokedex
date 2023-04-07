@@ -15,23 +15,28 @@ import {
     ListItem
 } from '@chakra-ui/react';
 import uuid from 'react-uuid';
-import appAxios from '../../helpers/appAxios';
+import logRequest from '../../helpers/logging';
+import axios from 'axios';
 
 const PokemonItem = ({ poke }) => {
     const { isOpen, onOpen, onClose } = useDisclosure();
-
+    
     const accessPokemon = async() => {
         onOpen();
-        await appAxios.get(`http://localhost:6001/pokemon/${poke['id']}`);
+        axios.get(`http://localhost:6001/pokemon/${poke['id']}`).then(
+            res => {
+                logRequest(`/pokemon/${poke['id']}`, res.status);
+            }
+        ).catch( err => {
+            logRequest(`/pokemon/${poke['id']}`, err.response.status);
+        });
     }
-
 
     const pokeImageSrc = id => {
         const pokeSrcNum = id.toString().padStart(3, '0');
         const srcLink = `https://github.com/fanzeyi/pokemon.json/raw/master/images/${pokeSrcNum}.png`;
         return srcLink;
     }
-
 
     return (
         <>

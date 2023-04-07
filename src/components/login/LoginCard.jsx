@@ -11,11 +11,13 @@ import {
     Input,
     Button,
     Stack,
-    Text
+    Text,
+    InputGroup,
+    InputRightElement
 } from '@chakra-ui/react';
 import toast from 'react-hot-toast';
 import { ACCESS_TOKEN_HEADER, REFRESH_TOKEN_HEADER } from '../../helpers/auth';
-import recordRequest from '../../helpers/trackRequests';
+import logRequest from '../../helpers/logging';
 
 const LoginCard = () => {
     const navigate = useNavigate();
@@ -24,6 +26,7 @@ const LoginCard = () => {
         username: '',
         password: ''
     });
+    const [show, setShow] = useState(false);
 
 
     const updateUsername = e => {
@@ -42,6 +45,8 @@ const LoginCard = () => {
         });
     }
 
+    const showPassword = () => setShow(!show);
+
     const loginUser = () => {
         if (loginInput['username'] == '' || loginInput['password'] == '') {
             setIsError(true);
@@ -57,11 +62,11 @@ const LoginCard = () => {
             localStorage.setItem('access_token', res.headers[ACCESS_TOKEN_HEADER]);
             localStorage.setItem('refresh_token', res.headers[REFRESH_TOKEN_HEADER]);
             navigate('/search');
-            recordRequest('/login', res.status);
-        }).catch( err => {
+            logRequest('/login', res.status);
+        }).catch(err => {
             console.log(err.response.status)
             toast.error("Login unsuccessful, please try again.");
-            recordRequest('/login', err.response.status);
+            logRequest('/login', err.response.status);
         })
     };
 
@@ -90,18 +95,27 @@ const LoginCard = () => {
                     <Heading size='xs' textTransform='uppercase'>
                         Password
                     </Heading>
-                    <Input
-                        mb='5'
-                        size='md'
-                        w='20rem'
-                        isInvalid={isError}
-                        onChange={updatePassword}
-                    />
+
+                    <InputGroup size='md'>
+                        <Input
+                            mb='5'
+                            size='md'
+                            w='20rem'
+                            type={show ? 'text' : 'password'}
+                            isInvalid={isError}
+                            onChange={updatePassword}
+                        />
+                        <InputRightElement width='4.5rem'>
+                            <Button h='1.75rem' size='sm' onClick={showPassword}>
+                                {show ? 'Hide' : 'Show'}
+                            </Button>
+                        </InputRightElement>
+                    </InputGroup>
                     {
-                        isError?
+                        isError ?
                             <Text color='red'>
                                 Provide a password and username.
-                            </Text> : 
+                            </Text> :
                             <></>
                     }
                 </CardBody>

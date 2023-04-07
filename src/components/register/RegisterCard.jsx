@@ -15,7 +15,7 @@ import {
     Select
 } from '@chakra-ui/react';
 import toast from 'react-hot-toast';
-import recordRequest from '../../helpers/trackRequests';
+import logRequest from '../../helpers/logging';
 
 const RegisterCard = () => {
     const navigate = useNavigate();
@@ -68,10 +68,10 @@ const RegisterCard = () => {
             email: registerInput['email']
         }).then( res => {
             toast.success('User registered successfully!');
-            recordRequest('/register', res.status);
+            logRequest('/register', res.status);
         }).catch( err => {
             toast.error(`Registration failed: ${err}`);
-            recordRequest('/register', err.response.status);
+            logRequest('/register', err.response.status);
         })
     };
 

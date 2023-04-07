@@ -9,8 +9,8 @@ import Page from '../components/search/Page';
 import SearchBox from '../components/search/SearchBox';
 import toast from 'react-hot-toast';
 import Navbar from '../components/layout/Navbar';
-import appAxios from '../helpers/appAxios';
-import recordRequest from '../helpers/trackRequests';
+import logRequest from '../helpers/logging';
+import jwt_decode from 'jwt-decode';
 
 const SearchPage = () => {
 
@@ -21,6 +21,25 @@ const SearchPage = () => {
     const [userInputs, setUserInputs] = useState({
         searchName: '',
         filterTypes: []
+    });
+    const axiosJWT = axios.create();
+
+    axiosJWT.interceptors.request.use( async (config) => {
+        let decodedAccessToken = jwt_decode(localStorage.getItem('access_token'));
+        if (decodedAccessToken.exp < Date.now() / 1000) {
+            const res = await axios.get('http://localhost:6001/requestNewAccessToken', {
+                headers: {
+                    'auth-token-refresh': localStorage.getItem('refresh_token')
+                }
+            })
+            localStorage.setItem('access_token', res.headers['auth-token-access']);
+            config.headers['auth-token-access'] = res.headers['auth-token-access'];
+            logRequest('/requestNewAccessToken', res.status);
+        }
+        console.log(config);    
+        return config;
+    }, err => {
+        return Promise.reject(err);
     });
 
     useEffect(() => {
@@ -34,18 +53,18 @@ const SearchPage = () => {
     const fetchData = async () => {
         let storedData = localStorage.getItem('pokemons');
         if (!storedData) {
-            axios.get('http://localhost:6001/pokemons')
+            axiosJWT.get('http://localhost:6001/pokemons')
                 .then((res) => {
                     localStorage.setItem('pokemons', JSON.stringify(res.data));
                     storedData = JSON.parse(localStorage.getItem('pokemons'));
                     setAllPokemons(storedData);
                     setPokemons(storedData);
-                    recordRequest('/pokemons', res.status);
+                    logRequest('/pokemons', res.status);
                     return;
                 }).catch(err => {
                     localStorage.setItem('pokemons', []);
                     toast.error(`Error retreiving pokemons: ${err}. Refresh the page and try again.`)
-                    recordRequest('/pokemons', err.response.status);
+                    logRequest('/pokemons', err.response.status);
                 });
         }
         storedData = JSON.parse(localStorage.getItem('pokemons'));
