@@ -26,7 +26,6 @@ appAxios.interceptors.response.use(
         }
 
         await axios.post(`https://pokemon-server-h0eu.onrender.com/request/create`, payload);
-
     }
 );
 

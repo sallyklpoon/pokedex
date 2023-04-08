@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect, useState }from 'react';
 import { useNavigate } from 'react-router';
 import {
     Box,
@@ -15,24 +15,33 @@ import logRequest from '../../helpers/logging';
 
 const Navbar = () => {
     const navigate = useNavigate();
+    const [user, setUser] = useState(null);
 
-    const getUsername = () => {
+    useEffect(() => {
         const user = JSON.parse(localStorage.getItem('user'));
-        return user?.username;
-    }
+        setUser(user);
+    }, []);
 
     const logoutUser = () => {
         axios.get('https://pokemon-server-h0eu.onrender.com/logout', {
             headers: {
                 'auth-token-refresh': localStorage.getItem('refresh_token')
             }
-        }).then( res => {
+        }).then(res => {
             logRequest('/logout', res.status);
             localStorage.clear();
             navigate('/');
         }).catch(err => {
             logRequest('/logout', err.response.status);
         })
+    }
+
+    const toSearch = () => {
+        navigate('/search');
+    }
+
+    const toReports = () => {
+        navigate('/admin');
     }
 
     return (
@@ -44,6 +53,26 @@ const Navbar = () => {
             >
                 <Flex alignItems='center' h='100%' maxWidth='100vw' px='5'>
                     <Text fontSize='3xl' >Pokédex</Text>
+                    <Button
+                        variant='ghost'
+                        colorScheme='teal'
+                        m='3'
+                        onClick={toSearch}
+                    >
+                        Search
+                    </Button>
+                    {
+                        user?.role == 'admin' &&
+                        <Button
+                            variant='ghost'
+                            colorScheme='teal'
+                            m='3'
+                            onClick={toReports}
+                        >
+                            Reports
+                        </Button>
+
+                    }
                     <Spacer />
                     <HStack >
 
@@ -56,9 +85,9 @@ const Navbar = () => {
                             Logout
                         </Button>
 
-                        <Text as='b'>{getUsername()}</Text>
+                        <Text as='b'>{user?.username}</Text>
                         <Avatar
-                            name={getUsername()}
+                            name={user?.username}
                             size='sm'
                         />
 

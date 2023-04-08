@@ -62,6 +62,12 @@ const RegisterCard = () => {
 
 
     const registerUser = () => {
+
+        if (registerInput['username'] === '' || registerInput['password'] === '' || registerInput['email'] === '' || registerInput['role'] === '') {
+            setIsError(true);
+            return;
+        }
+
         axios.post('https://pokemon-server-h0eu.onrender.com/register', {
             username: registerInput['username'],
             password: registerInput['password'],
