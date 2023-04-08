@@ -11,7 +11,7 @@ import {
 } from '@chakra-ui/react'
 
 
-const TopEndpointUsersReport = ({ logs }) => {
+const Endpoints4xxReport = ({ logs }) => {
     return (
 
             <TableContainer>
@@ -20,8 +20,8 @@ const TopEndpointUsersReport = ({ logs }) => {
                     <Thead>
                         <Tr>
                             <Th>Endpoint</Th>
-                            <Th>Top User</Th>
-                            <Th isNumeric>Requested Count</Th>
+                            <Th>Accessed Time</Th>
+                            <Th isNumeric>Error Code</Th>
                         </Tr>
                     </Thead>
                     <Tbody>
@@ -29,9 +29,9 @@ const TopEndpointUsersReport = ({ logs }) => {
                             logs.map(log => {
                                 return (
                                     <Tr>
-                                        <Td>{log['endpoint']}</Td>
-                                        <Td>{log['user']['username']}</Td>
-                                        <Td isNumeric>{log['user']['count']}</Td>
+                                        <Td>{log['_id']['endpoint']}</Td>
+                                        <Td>{log['_id']['accessedAt']}</Td>
+                                        <Td isNumeric>{log['_id']['status']}</Td>
                                     </Tr>
                                 )
                             })
@@ -43,4 +43,4 @@ const TopEndpointUsersReport = ({ logs }) => {
     )
 };
 
-export default TopEndpointUsersReport;
+export default Endpoints4xxReport;
