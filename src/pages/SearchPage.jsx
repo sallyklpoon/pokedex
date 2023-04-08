@@ -53,7 +53,11 @@ const SearchPage = () => {
     const fetchData = async () => {
         let storedData = localStorage.getItem('pokemons');
         if (!storedData) {
-            axiosJWT.get('http://localhost:6001/pokemons')
+            axiosJWT.get('http://localhost:6001/pokemons', {
+                headers: {
+                    'auth-token-access': localStorage.getItem('access_token')
+                }
+            })
                 .then((res) => {
                     localStorage.setItem('pokemons', JSON.stringify(res.data));
                     storedData = JSON.parse(localStorage.getItem('pokemons'));
