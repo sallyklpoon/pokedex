@@ -8,7 +8,6 @@ import {
     Box,
     Flex,
     Text,
-    Heading
 } from '@chakra-ui/react';
 import axios from 'axios';
 import Navbar from '../components/layout/Navbar';

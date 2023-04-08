@@ -7,6 +7,7 @@ import RegisterPage from './pages/RegisterPage';
 import { Toaster } from 'react-hot-toast';
 import AdminRoute from './components/routing/AdminRoute';
 import AuthRoute from './components/routing/AuthRoute';
+import PageNotFound from './components/layout/PageNotFound';
 
 
 function App() {
@@ -33,6 +34,8 @@ function App() {
             <SearchPage />
           </AuthRoute>
         } />
+
+        <Route path='*' element={<PageNotFound/>}/>
 
       </Routes>
     </>
