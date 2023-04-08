@@ -12,6 +12,7 @@ import toast from 'react-hot-toast';
 import Navbar from '../components/layout/Navbar';
 import logRequest from '../helpers/logging';
 import jwt_decode from 'jwt-decode';
+import { useNavigate } from 'react-router-dom';
 
 const SearchPage = () => {
 
@@ -26,17 +27,23 @@ const SearchPage = () => {
     const [isLoading, setIsLoading] = useState(false);
     const axiosJWT = axios.create();
     const server = 'https://pokemon-server-h0eu.onrender.com';
+    const navigate = useNavigate();
 
     axiosJWT.interceptors.request.use(async (config) => {
         let decodedAccessToken = jwt_decode(localStorage.getItem('access_token'));
         if (decodedAccessToken.exp < Date.now() / 1000) {
-            const res = await axios.get(`${server}/requestNewAccessToken`, {
-                headers: {
-                    'auth-token-refresh': localStorage.getItem('refresh_token')
-                }
-            })
-            localStorage.setItem('access_token', res.headers['auth-token-access']);
-            config.headers['auth-token-access'] = res.headers['auth-token-access'];
+            try {
+                const res = await axios.get(`${server}/requestNewAccessToken`, {
+                    headers: {
+                        'auth-token-refresh': localStorage.getItem('refresh_token')
+                    }
+                })
+                localStorage.setItem('access_token', res.headers['auth-token-access']);
+                config.headers['auth-token-access'] = res.headers['auth-token-access'];
+            } catch (err) {
+                toast.error('Your session has expired. Please log-in again.');
+                navigate('/');
+            }
         }
         console.log(config);
         return config;

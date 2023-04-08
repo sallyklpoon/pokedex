@@ -17,6 +17,8 @@ import TopEndpointUsersReport from '../components/admin/TopEndpointUsersReport';
 import Endpoints4xxReport from '../components/admin/Endpoints4xxReport';
 import RecentErrorsReport from '../components/admin/RecentErrorsReport';
 import jwt_decode from 'jwt-decode';
+import toast from 'react-hot-toast';
+import { useNavigate } from 'react-router-dom';
 
 const AdminPage = () => {
     const [uniqueUsers, setUniqueUsers] = useState([]);
@@ -25,19 +27,25 @@ const AdminPage = () => {
     const [endpoint4XXErrors, setEndpoint4XXErrors] = useState([]);
     const [recentErrors, setRecentErrors] = useState([]);
     const axiosJWT = axios.create();
+    const navigate = useNavigate();
 
     const server = 'https://pokemon-server-h0eu.onrender.com';
 
     axiosJWT.interceptors.request.use( async (config) => {
         let decodedAccessToken = jwt_decode(localStorage.getItem('access_token'));
         if (decodedAccessToken.exp < Date.now() / 1000) {
-            const res = await axios.get(`${server}/requestNewAccessToken`, {
-                headers: {
-                    'auth-token-refresh': localStorage.getItem('refresh_token')
-                }
-            })
-            localStorage.setItem('access_token', res.headers['auth-token-access']);
-            config.headers['auth-token-access'] = res.headers['auth-token-access'];
+            try {
+                const res = await axios.get(`${server}/requestNewAccessToken`, {
+                    headers: {
+                        'auth-token-refresh': localStorage.getItem('refresh_token')
+                    }
+                })
+                localStorage.setItem('access_token', res.headers['auth-token-access']);
+                config.headers['auth-token-access'] = res.headers['auth-token-access'];
+            } catch (err) {
+                toast.error('Your session has expired. Please log-in again.');
+                navigate('/');
+            }
         }
         console.log(config);    
         return config;

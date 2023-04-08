@@ -56,17 +56,16 @@ const Navbar = () => {
                     <Button
                         variant='ghost'
                         colorScheme='teal'
-                        m='3'
+                        ml='10'
                         onClick={toSearch}
                     >
                         Search
                     </Button>
                     {
-                        user?.role == 'admin' &&
+                        user?.role === 'admin' &&
                         <Button
                             variant='ghost'
                             colorScheme='teal'
-                            m='3'
                             onClick={toReports}
                         >
                             Reports
