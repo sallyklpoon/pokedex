@@ -17,6 +17,7 @@ import TopUsersOverallReport from '../components/admin/TopUsersOverallReport';
 import TopEndpointUsersReport from '../components/admin/TopEndpointUsersReport';
 import Endpoints4xxReport from '../components/admin/Endpoints4xxReport';
 import RecentErrorsReport from '../components/admin/RecentErrorsReport';
+import jwt_decode from 'jwt-decode';
 
 const AdminPage = () => {
     const [uniqueUsers, setUniqueUsers] = useState([]);
@@ -24,58 +25,81 @@ const AdminPage = () => {
     const [topEndpointUsers, setTopEndpointUsers] = useState([]);
     const [endpoint4XXErrors, setEndpoint4XXErrors] = useState([]);
     const [recentErrors, setRecentErrors] = useState([]);
+    const axiosJWT = axios.create();
+
+    axiosJWT.interceptors.request.use( async (config) => {
+        let decodedAccessToken = jwt_decode(localStorage.getItem('access_token'));
+        if (decodedAccessToken.exp < Date.now() / 1000) {
+            const res = await axios.get('http://localhost:6001/requestNewAccessToken', {
+                headers: {
+                    'auth-token-refresh': localStorage.getItem('refresh_token')
+                }
+            })
+            localStorage.setItem('access_token', res.headers['auth-token-access']);
+            config.headers['auth-token-access'] = res.headers['auth-token-access'];
+        }
+        console.log(config);    
+        return config;
+    }, err => {
+        return Promise.reject(err);
+    });
 
     const fetchUniqueUsers = async () => {
-        let res = await axios.get('http://localhost:6001/adminReports/uniqueUsers', {
+        let res = await axiosJWT.get('http://localhost:6001/adminReports/uniqueUsers', {
             headers: {
-                'auth-token-access': localStorage.getItem('access_token')
+                'auth-token-access': localStorage.getItem('access_token'),
+                'user-role': JSON.parse(localStorage.getItem('user')).role
             }
         });
         setUniqueUsers(res.data);
     };
 
     const fetchTopUsersOverall = async () => {
-        let res = await axios.get('http://localhost:6001/adminReports/topUsers', {
+        let res = await axiosJWT.get('http://localhost:6001/adminReports/topUsers', {
             headers: {
-                'auth-token-access': localStorage.getItem('access_token')
+                'auth-token-access': localStorage.getItem('access_token'),
+                'user-role': JSON.parse(localStorage.getItem('user')).role
             }
         });
         setTopUsersOverall(res.data);
     }
 
     const fetchTopEndpointUsers = async () => {
-        let res = await axios.get('http://localhost:6001/adminReports/endpointTop', {
+        let res = await axiosJWT.get('http://localhost:6001/adminReports/endpointTop', {
             headers: {
-                'auth-token-access': localStorage.getItem('access_token')
+                'auth-token-access': localStorage.getItem('access_token'),
+                'user-role': JSON.parse(localStorage.getItem('user')).role
             }
         });
         setTopEndpointUsers(res.data);
     }
 
     const fetchEndpoint4xxLogs = async () => {
-        let res = await axios.get('http://localhost:6001/adminReports/endpoint4xxErrors', {
+        let res = await axiosJWT.get('http://localhost:6001/adminReports/endpoint4xxErrors', {
             headers: {
-                'auth-token-access': localStorage.getItem('access_token')
+                'auth-token-access': localStorage.getItem('access_token'),
+                'user-role': JSON.parse(localStorage.getItem('user')).role
             }
         });
         setEndpoint4XXErrors(res.data);
     }
 
     const fetchRecentErrors = async () => {
-        let res = await axios.get('http://localhost:6001/adminReports/recentErrors', {
+        let res = await axiosJWT.get('http://localhost:6001/adminReports/recentErrors', {
             headers: {
-                'auth-token-access': localStorage.getItem('access_token')
+                'auth-token-access': localStorage.getItem('access_token'),
+                'user-role': JSON.parse(localStorage.getItem('user')).role
             }
         });
         setRecentErrors(res.data);
     }
 
-    useEffect(() => {
-      fetchUniqueUsers();
-      fetchTopUsersOverall();
-      fetchTopEndpointUsers();
-      fetchEndpoint4xxLogs();
-      fetchRecentErrors();
+    useEffect(async() => {
+      await fetchUniqueUsers();
+      await fetchTopUsersOverall();
+      await fetchTopEndpointUsers();
+      await fetchEndpoint4xxLogs();
+      await fetchRecentErrors();
     }, [])
 
     return (

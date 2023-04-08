@@ -34,7 +34,6 @@ const SearchPage = () => {
             })
             localStorage.setItem('access_token', res.headers['auth-token-access']);
             config.headers['auth-token-access'] = res.headers['auth-token-access'];
-            logRequest('/requestNewAccessToken', res.status);
         }
         console.log(config);    
         return config;
