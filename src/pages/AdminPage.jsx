@@ -143,7 +143,7 @@ const AdminPage = () => {
                         <h2>
                             <AccordionButton>
                                 <Box as="span" flex='1' textAlign='left'>
-                                    <b>4XX Errors by endpoint</b>
+                                    <b>Top Users at each endpoint</b>
                                 </Box>
                                 <AccordionIcon />
                             </AccordionButton>
