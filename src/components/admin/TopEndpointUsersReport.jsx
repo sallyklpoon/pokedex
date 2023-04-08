@@ -8,7 +8,8 @@ import {
     Td,
     TableCaption,
     TableContainer,
-} from '@chakra-ui/react'
+} from '@chakra-ui/react';
+import uuid from 'react-uuid';
 
 
 const TopEndpointUsersReport = ({ logs }) => {
@@ -28,7 +29,7 @@ const TopEndpointUsersReport = ({ logs }) => {
                         {
                             logs.map(log => {
                                 return (
-                                    <Tr>
+                                    <Tr key={uuid()}>
                                         <Td>{log['endpoint']}</Td>
                                         <Td>{log['user']['username']}</Td>
                                         <Td isNumeric>{log['user']['count']}</Td>

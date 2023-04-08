@@ -10,7 +10,8 @@ import {
     TableCaption,
     TableContainer,
     Center
-} from '@chakra-ui/react'
+} from '@chakra-ui/react';
+import uuid from 'react-uuid';
 
 
 const TopUsersOverallReport = ({ userData }) => {
@@ -29,7 +30,7 @@ const TopUsersOverallReport = ({ userData }) => {
                         {
                             userData.map(user => {
                                 return (
-                                    <Tr>
+                                    <Tr key={uuid()}>
                                         <Td>{user['_id']}</Td>
                                         <Td isNumeric>{user['count']}</Td>
                                     </Tr>

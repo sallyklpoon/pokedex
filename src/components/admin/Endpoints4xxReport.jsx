@@ -9,6 +9,7 @@ import {
     TableCaption,
     TableContainer,
 } from '@chakra-ui/react'
+import uuid from 'react-uuid';
 
 
 const Endpoints4xxReport = ({ logs }) => {
@@ -28,7 +29,7 @@ const Endpoints4xxReport = ({ logs }) => {
                         {
                             logs.map(log => {
                                 return (
-                                    <Tr>
+                                    <Tr key={uuid()}>
                                         <Td>{log['_id']['endpoint']}</Td>
                                         <Td>{log['_id']['accessedAt']}</Td>
                                         <Td isNumeric>{log['_id']['status']}</Td>
