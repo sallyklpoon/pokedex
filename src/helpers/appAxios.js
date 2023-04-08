@@ -13,7 +13,7 @@ appAxios.interceptors.response.use(
             status: res.status
         }
 
-        await axios.post(`http://localhost:6001/request/create`, payload);
+        await axios.post(`https://pokemon-server-h0eu.onrender.com/request/create`, payload);
     }, async(err) => {
 
         const reqURL = new URL(err.response.config.url);
@@ -25,7 +25,7 @@ appAxios.interceptors.response.use(
             status: err.response.status
         }
 
-        await axios.post(`http://localhost:6001/request/create`, payload);
+        await axios.post(`https://pokemon-server-h0eu.onrender.com/request/create`, payload);
 
     }
 );

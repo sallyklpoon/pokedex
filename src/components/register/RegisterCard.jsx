@@ -62,7 +62,7 @@ const RegisterCard = () => {
 
 
     const registerUser = () => {
-        axios.post('http://localhost:6001/register', {
+        axios.post('https://pokemon-server-h0eu.onrender.com/register', {
             username: registerInput['username'],
             password: registerInput['password'],
             email: registerInput['email']
@@ -74,7 +74,7 @@ const RegisterCard = () => {
             logRequest('/register', err.response.status);
         })
     };
-
+        
     const toLogin = () => {
         navigate('/');
     }

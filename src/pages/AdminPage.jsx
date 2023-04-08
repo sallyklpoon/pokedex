@@ -26,10 +26,12 @@ const AdminPage = () => {
     const [recentErrors, setRecentErrors] = useState([]);
     const axiosJWT = axios.create();
 
+    const server = 'https://pokemon-server-h0eu.onrender.com';
+
     axiosJWT.interceptors.request.use( async (config) => {
         let decodedAccessToken = jwt_decode(localStorage.getItem('access_token'));
         if (decodedAccessToken.exp < Date.now() / 1000) {
-            const res = await axios.get('http://localhost:6001/requestNewAccessToken', {
+            const res = await axios.get(`${server}/requestNewAccessToken`, {
                 headers: {
                     'auth-token-refresh': localStorage.getItem('refresh_token')
                 }
@@ -44,7 +46,7 @@ const AdminPage = () => {
     });
 
     const fetchUniqueUsers = async () => {
-        let res = await axiosJWT.get('http://localhost:6001/adminReports/uniqueUsers', {
+        let res = await axiosJWT.get(`${server}/adminReports/uniqueUsers`, {
             headers: {
                 'auth-token-access': localStorage.getItem('access_token'),
                 'user-role': JSON.parse(localStorage.getItem('user')).role
@@ -54,7 +56,7 @@ const AdminPage = () => {
     };
 
     const fetchTopUsersOverall = async () => {
-        let res = await axiosJWT.get('http://localhost:6001/adminReports/topUsers', {
+        let res = await axiosJWT.get(`${server}/adminReports/topUsers`, {
             headers: {
                 'auth-token-access': localStorage.getItem('access_token'),
                 'user-role': JSON.parse(localStorage.getItem('user')).role
@@ -64,7 +66,7 @@ const AdminPage = () => {
     }
 
     const fetchTopEndpointUsers = async () => {
-        let res = await axiosJWT.get('http://localhost:6001/adminReports/endpointTop', {
+        let res = await axiosJWT.get(`${server}/adminReports/endpointTop`, {
             headers: {
                 'auth-token-access': localStorage.getItem('access_token'),
                 'user-role': JSON.parse(localStorage.getItem('user')).role
@@ -74,7 +76,7 @@ const AdminPage = () => {
     }
 
     const fetchEndpoint4xxLogs = async () => {
-        let res = await axiosJWT.get('http://localhost:6001/adminReports/endpoint4xxErrors', {
+        let res = await axiosJWT.get(`${server}/adminReports/endpoint4xxErrors`, {
             headers: {
                 'auth-token-access': localStorage.getItem('access_token'),
                 'user-role': JSON.parse(localStorage.getItem('user')).role
@@ -84,7 +86,7 @@ const AdminPage = () => {
     }
 
     const fetchRecentErrors = async () => {
-        let res = await axiosJWT.get('http://localhost:6001/adminReports/recentErrors', {
+        let res = await axiosJWT.get(`${server}/adminReports/recentErrors`, {
             headers: {
                 'auth-token-access': localStorage.getItem('access_token'),
                 'user-role': JSON.parse(localStorage.getItem('user')).role
@@ -93,12 +95,12 @@ const AdminPage = () => {
         setRecentErrors(res.data);
     }
 
-    useEffect(async() => {
-      await fetchUniqueUsers();
-      await fetchTopUsersOverall();
-      await fetchTopEndpointUsers();
-      await fetchEndpoint4xxLogs();
-      await fetchRecentErrors();
+    useEffect(() => {
+      fetchUniqueUsers();
+      fetchTopUsersOverall();
+      fetchTopEndpointUsers();
+      fetchEndpoint4xxLogs();
+      fetchRecentErrors();
     }, [])
 
     return (

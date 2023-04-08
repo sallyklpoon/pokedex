@@ -2,7 +2,8 @@ import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 import {
     Text,
-    Flex
+    Flex,
+    Spinner
 } from '@chakra-ui/react';
 import Pagination from '../components/search/Pagination';
 import Page from '../components/search/Page';
@@ -22,12 +23,14 @@ const SearchPage = () => {
         searchName: '',
         filterTypes: []
     });
+    const [isLoading, setIsLoading] = useState(false);
     const axiosJWT = axios.create();
+    const server = 'https://pokemon-server-h0eu.onrender.com';
 
-    axiosJWT.interceptors.request.use( async (config) => {
+    axiosJWT.interceptors.request.use(async (config) => {
         let decodedAccessToken = jwt_decode(localStorage.getItem('access_token'));
         if (decodedAccessToken.exp < Date.now() / 1000) {
-            const res = await axios.get('http://localhost:6001/requestNewAccessToken', {
+            const res = await axios.get(`${server}/requestNewAccessToken`, {
                 headers: {
                     'auth-token-refresh': localStorage.getItem('refresh_token')
                 }
@@ -35,7 +38,7 @@ const SearchPage = () => {
             localStorage.setItem('access_token', res.headers['auth-token-access']);
             config.headers['auth-token-access'] = res.headers['auth-token-access'];
         }
-        console.log(config);    
+        console.log(config);
         return config;
     }, err => {
         return Promise.reject(err);
@@ -46,13 +49,14 @@ const SearchPage = () => {
     }, [userInputs]);
 
     useEffect(() => {
+        setIsLoading(true);
         fetchData();
     }, []);
 
     const fetchData = async () => {
         let storedData = localStorage.getItem('pokemons');
         if (!storedData) {
-            axiosJWT.get('http://localhost:6001/pokemons', {
+            axiosJWT.get(`${server}/pokemons`, {
                 headers: {
                     'auth-token-access': localStorage.getItem('access_token')
                 }
@@ -63,6 +67,7 @@ const SearchPage = () => {
                     setAllPokemons(storedData);
                     setPokemons(storedData);
                     logRequest('/pokemons', res.status);
+                    setIsLoading(false);
                     return;
                 }).catch(err => {
                     localStorage.setItem('pokemons', []);
@@ -73,9 +78,10 @@ const SearchPage = () => {
         storedData = JSON.parse(localStorage.getItem('pokemons'));
         setAllPokemons(storedData);
         setPokemons(storedData);
+        setIsLoading(false);
     };
 
-    const filterPokemons = async(inputs) => {
+    const filterPokemons = async (inputs) => {
         let filteredPoke = allPokemons;
         if (inputs['filterTypes'].length !== 0) {
             filteredPoke = filteredPoke.filter(poke => {
@@ -93,15 +99,19 @@ const SearchPage = () => {
 
     return (
         <>
-            <Navbar/>
+            <Navbar />
 
             <Flex direction='column' m='5' alignItems='center'>
-            <Text fontSize='3xl'>Search Pokémons</Text>
+                <Text fontSize='3xl'>Search Pokémons</Text>
 
                 <SearchBox
                     inputs={userInputs}
                     setUserInputs={setUserInputs}
                 />
+
+                {
+                    isLoading && <Spinner color='teal' size='xl' mt='5' />
+                }
 
                 <Page
                     pokemons={pokemons}

@@ -53,7 +53,7 @@ const LoginCard = () => {
             return;
         }
 
-        axios.post('http://localhost:6001/login', {
+        axios.post('https://pokemon-server-h0eu.onrender.com/login', {
             username: loginInput['username'],
             password: loginInput['password']
         }).then(res => {

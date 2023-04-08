@@ -23,7 +23,7 @@ const PokemonItem = ({ poke }) => {
     
     const accessPokemon = async() => {
         onOpen();
-        axios.get(`http://localhost:6001/pokemon/${poke['id']}`).then(
+        axios.get(`https://pokemon-server-h0eu.onrender.com/${poke['id']}`).then(
             res => {
                 logRequest(`/pokemon/${poke['id']}`, res.status);
             }

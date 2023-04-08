@@ -12,6 +12,7 @@ import {
 import axios from 'axios';
 import logRequest from '../../helpers/logging';
 
+
 const Navbar = () => {
     const navigate = useNavigate();
 
@@ -21,7 +22,7 @@ const Navbar = () => {
     }
 
     const logoutUser = () => {
-        axios.get('http://localhost:6001/logout', {
+        axios.get('https://pokemon-server-h0eu.onrender.com/logout', {
             headers: {
                 'auth-token-refresh': localStorage.getItem('refresh_token')
             }
